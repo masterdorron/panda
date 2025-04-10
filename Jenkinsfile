@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh "docker run -d -p 5000:5000 --name ${CONTAINER_NAME} ${IMAGE_TAG}"
+                sh "docker run -d -p 5001:5000 --name ${CONTAINER_NAME} ${IMAGE_TAG}"
                 sh 'sleep 5'
                 sh 'curl --fail http://host.docker.internal:5000/api || exit 1'
             }
