@@ -79,9 +79,10 @@ Jenkins использует пайплайн с declarative-синтаксис�
 
 Установка Jenkins (локально через Docker)
 ```bash
-docker run -d --name jenkins \\
-  -p 8080:8080 -p 50000:50000 \\
-  -v /var/run/docker.sock:/var/run/docker.sock \\
+docker run -d --name jenkins \
+  -p 8080:8080 -p 50000:50000 \
+  --network="host" \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   jenkins/jenkins:lts
 ```
 Затем открыть http://localhost:8080, ввести initial admin password (см. в логах), установить рекомендованные плагины и создать job.
@@ -107,6 +108,7 @@ URL: https://github.com/masterdorron/panda.git
 ```bash
 docker run -d \
   -p 9090:9090 \
+  --network="host" \
   -v /path/to/repo/prometheus.yml:/etc/prometheus/prometheus.yml \
   --name prometheus \
   prom/prometheus
@@ -128,6 +130,7 @@ cAdvisor: localhost:8082
 ```bash
 docker run -d \
   -p 8082:8080 \
+  --network="host" \
   --name cadvisor \
   google/cadvisor:latest
 ```
@@ -136,6 +139,7 @@ docker run -d \
 ```bash
 docker run -d \
   -p 3000:3000 \
+  --network="host" \
   --name grafana \
   grafana/grafana
 ```
