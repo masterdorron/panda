@@ -10,7 +10,6 @@
 
 - Docker ≥ 20.10  
 - Docker Compose ≥ 1.29  
-- Python 3.10 (используется в контейнере)  
 - Jenkins с доступом к Docker (если CI/CD будет запускаться локально)
 
 ---
@@ -79,12 +78,12 @@ Jenkins использует пайплайн с declarative-синтаксис�
 ## 🚀 Развёртывание CI/CD пайплайна
 
 Установка Jenkins (локально через Docker)
-
+```bash
 docker run -d --name jenkins \\
   -p 8080:8080 -p 50000:50000 \\
   -v /var/run/docker.sock:/var/run/docker.sock \\
   jenkins/jenkins:lts
-
+```
 Затем открыть http://localhost:8080, ввести initial admin password (см. в логах), установить рекомендованные плагины и создать job.
 
 Настройка job в Jenkins
@@ -105,40 +104,41 @@ URL: https://github.com/masterdorron/panda.git
 Конфиг: prometheus.yml
 
 Запуск
-
+```bash
 docker run -d \
   -p 9090:9090 \
   -v /path/to/repo/prometheus.yml:/etc/prometheus/prometheus.yml \
   --name prometheus \
   prom/prometheus
+```
 Цели (targets)
 
 Docker: localhost:9323
 Включить в /etc/docker/daemon.json:
-
+```json
 {
   "metrics-addr": "127.0.0.1:9323",
   "experimental": true
 }
-
+```
 cAdvisor: localhost:8082
 
 ### cAdvisor
 Запуск
-
+```bash
 docker run -d \
   -p 8082:8080 \
   --name cadvisor \
   google/cadvisor:latest
-
+```
 ### Grafana
 Запуск
-
+```bash
 docker run -d \
   -p 3000:3000 \
   --name grafana \
   grafana/grafana
-
+```
 Доступ
 http://localhost:3000
 Логин: admin
@@ -150,10 +150,13 @@ http://localhost:9090
 Дашборд
 
 CPU:
+```bash
 sum(rate(container_cpu_usage_seconds_total{name="app-container"}[1m]))
-
+```
 Память:
+```bash
 container_memory_usage_bytes{name="app-container"}
+```
 Оповещения
 
 CPU > 80% в течение 1 минуты:
